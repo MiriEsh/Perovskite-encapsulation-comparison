@@ -90,7 +90,7 @@ if __name__ == '__main__':
          'Stability_PCE_end_of_experiment', 'Stability_time_total_exposure',
          'Perovskite_thickness', 'Perovskite_deposition_thermal_annealing_temperature',
          'Perovskite_deposition_thermal_annealing_time', 'Calculated_Ts80']]
-    Perovskites.to_csv('422_Experiments_with_Ts80_for_supp.csv')
+    Perovskites.to_csv('Experiments_with_Ts80_for_supp.csv')
 
     # classifying to groups:
     Other = Perovskites[Perovskites['Encapsulation_materials'].str.contains('glass cans|Graphene|Field|particles|polyethylene terephthalate|Polymer hydrophobic film|MAA|Carbon-nt|acrylic elastomer', case=False) == True]
@@ -119,9 +119,9 @@ if __name__ == '__main__':
                         'Stability_PCE_end_of_experiment', 'Stability_PCE_T95','Stability_PCE_Ts95','Stability_PCE_T80','Stability_PCE_Ts80','Stability_PCE_Te80',
                         'Stability_PCE_Tse80','Stability_PCE_after_1000_h','Stability_PCE_burn_in_observed','Stability_light_source_type','Stability_protocol',
                         'Stability_potential_bias_load_condition', 'Calculated_Ts80']]
-    info_for_analysis.to_csv('experiments_with_Encap_and_stability.csv')
+    info_for_analysis.to_csv('Experiments_with_Encap_and_stability.csv')
 
-    Graph_titles= ["All 252 experiments","Ambient experiments","Experiments at 65 degrees","Dark Open Circuit Experiments","Light Experiments","Light MPPT Experiments"]
+    Graph_titles= ["All experiments","Ambient experiments","Experiments at 65 degrees","Dark Open Circuit Experiments","Light Experiments","Light MPPT Experiments"]
     #preparing data for the graphs X=encapsulation_group X[0]-> all experiments, X[1]-> ambient experiments, X[2]-> experiments in 65deg,
     # X[3]-> dark OC experiments, X[4]->light OC experiments, X[5]-> light MPP experiments
     Glass_butyl_rubber_Ts80=[]
