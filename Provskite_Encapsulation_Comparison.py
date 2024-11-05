@@ -10,11 +10,11 @@ if __name__ == '__main__':
 
     #adding encapsulation info retrieved from the articles:
     additional_glue_info = pd.read_csv(
-        'additions_to_Encapsulation_stack_sequence_and_Encapsulation_sealing_material.csv')
+        'additions_to_Encapsulation_info.csv')
     for i, row in additional_glue_info.iterrows():
         Perovskites.loc[Perovskites.Ref_ID == additional_glue_info.Ref_ID[i], ['Encapsulation_stack_sequence', 'Encapsulation_edge_sealing_materials']] = \
         additional_glue_info.new_Encapsulation_stack_sequence[i], additional_glue_info.new_Encapsulation_edge_sealing_materials[i]
-    print('added/changed encapsulation info from: additions_to_Encapsulation_stack_sequence_and_Encapsulation_sealing_material.csv')
+    print('added/changed encapsulation info from: additions_to_Encapsulation_info.csv')
     # adding stability info from 5 articles in the DB:
     Perovskites.loc[Perovskites.Ref_ID == 22840, ['Stability_time_total_exposure','Stability_PCE_end_of_experiment']] = 90, 110
     Perovskites.loc[Perovskites.Ref_ID == 43586, ['Stability_time_total_exposure', 'Stability_PCE_end_of_experiment']] = 3260, 90
