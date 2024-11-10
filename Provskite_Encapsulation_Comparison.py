@@ -19,13 +19,11 @@ if __name__ == '__main__':
         additional_glue_info.new_Encapsulation_stack_sequence[i], additional_glue_info.new_Encapsulation_edge_sealing_materials[i]
     print('added/changed encapsulation info using: additions_to_Encapsulation_info.csv')
     # adding stability info from 5 articles in the DB:
-    Perovskites.loc[Perovskites.Ref_ID == 22840, ['Stability_time_total_exposure','Stability_PCE_end_of_experiment']] = 90, 110
-    Perovskites.loc[Perovskites.Ref_ID == 43586, ['Stability_time_total_exposure', 'Stability_PCE_end_of_experiment']] = 3260, 90
-    Perovskites.loc[Perovskites.Ref_ID == 22379, ['Stability_PCE_end_of_experiment']] = 95
-    Perovskites.loc[Perovskites.Ref_ID == 42394, ['Stability_PCE_end_of_experiment']] = 95
-    Perovskites.loc[Perovskites.Ref_ID == 38323, ['Stability_PCE_end_of_experiment']] = 86
-    print('added stability info from 5 articles: 10.1039/c9ta01859j, 10.1021/acs.jpclett.0c00923, 10.1021/acsami.9b23532,10.1021/acsami.7b07625,10.1016/j.xcrp.2021.100648')
-
+    additional_PCE_info = pd.read_csv(dir_path + "\\inputs\\additions_to_PCE_info.csv")
+    for i, row in additional_PCE_info.iterrows():
+        Perovskites.loc[Perovskites.Ref_ID == additional_PCE_info.Ref_ID[i], ['Stability_time_total_exposure',
+                                                                               'Stability_PCE_end_of_experiment']] =   additional_PCE_info.new_Stability_time_total_exposure[i], additional_PCE_info.new_Stability_PCE_end_of_experiment[i]
+    print('added stability info info using: additions_to_PCE_info.csv')
     #taking out the rows with stability atmosphere N2 or Ar:
     num_of_rows_before_taking_out_atmosphereN2 = len(Perovskites)
     Perovskites = Perovskites[(Perovskites.Stability_atmosphere != 'N2') & (Perovskites.Stability_atmosphere != 'Ar') & (Perovskites.Stability_atmosphere != 'Water')]
