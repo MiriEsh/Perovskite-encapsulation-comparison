@@ -13,17 +13,11 @@ if __name__ == '__main__':
     Perovskites = pd.read_csv(dir_path + "\\inputs\\Perovsite database query.csv")
 
     #adding encapsulation info retrieved from the articles:
-    additional_glue_info = pd.read_csv(dir_path + "\\inputs\\additions_to_Encapsulation_info.csv")
-    for i, row in additional_glue_info.iterrows():
-        Perovskites.loc[Perovskites.Ref_ID == additional_glue_info.Ref_ID[i], ['Encapsulation_stack_sequence', 'Encapsulation_edge_sealing_materials']] = \
-        additional_glue_info.new_Encapsulation_stack_sequence[i], additional_glue_info.new_Encapsulation_edge_sealing_materials[i]
-    print('added/changed encapsulation info using: additions_to_Encapsulation_info.csv')
-    # adding stability info from 5 articles in the DB:
-    additional_PCE_info = pd.read_csv(dir_path + "\\inputs\\additions_to_PCE_info.csv")
-    for i, row in additional_PCE_info.iterrows():
-        Perovskites.loc[Perovskites.Ref_ID == additional_PCE_info.Ref_ID[i], ['Stability_time_total_exposure',
-                                                                               'Stability_PCE_end_of_experiment']] =   additional_PCE_info.new_Stability_time_total_exposure[i], additional_PCE_info.new_Stability_PCE_end_of_experiment[i]
-    print('added stability info info using: additions_to_PCE_info.csv')
+    additional_info = pd.read_csv(dir_path + "\\inputs\\Manual additions.csv")
+    for i, row in additional_info.iterrows():
+        Perovskites.loc[Perovskites.Ref_ID == row['Ref_ID']] = additional_info.loc[i].values
+    print('added/changed encapsulation info using: Manual additions.csv') # contains rows from Perovsite database query.csv with additions/changes in columns 'Encapsulation_stack_sequence', 'Encapsulation_edge_sealing_materials'  (97 rows with encapsulation changes) or Stability_time_total_exposure, Stability_PCE_end_of_experiment (4 rows with PCE info corrections)
+
     #taking out the rows with stability atmosphere N2 or Ar:
     num_of_rows_before_taking_out_atmosphereN2 = len(Perovskites)
     Perovskites = Perovskites[(Perovskites.Stability_atmosphere != 'N2') & (Perovskites.Stability_atmosphere != 'Ar') & (Perovskites.Stability_atmosphere != 'Water')]
@@ -52,7 +46,7 @@ if __name__ == '__main__':
     num_of_rows_with_clamp = num_after_deleting_short_circuit - len(Perovskites)
     print('took out ', num_of_rows_with_clamp, ' rows with Clamp in the encapsulation materials')
     PCE_end_greater_than_100 =Perovskites[Perovskites['Stability_PCE_end_of_experiment'] >= 100]
-    PCE_end_greater_than_100.to_csv(output_path+"\\Experiments_with_T80_greater_than_100.csv")
+    PCE_end_greater_than_100.to_csv(output_path+"\\Experiments_with_T80_greater_than_100.csv",index = False)
     Perovskites = Perovskites.drop(Perovskites[Perovskites['Stability_PCE_end_of_experiment'] >= 100].index)
     # if Stability_PCE_end_of_experiment=0 take Stability_PCE_end_of_experiment=0.001 in order to prevent converging ln(0) to -infinity
     Perovskites.loc[Perovskites['Stability_PCE_end_of_experiment'] == 0, 'Stability_PCE_end_of_experiment'] = 0.001
@@ -93,7 +87,7 @@ if __name__ == '__main__':
          'Stability_PCE_end_of_experiment', 'Stability_time_total_exposure',
          'Perovskite_thickness', 'Perovskite_deposition_thermal_annealing_temperature',
          'Perovskite_deposition_thermal_annealing_time', 'Calculated_T80']]
-    Perovskites.to_csv(output_path+"\\Experiments_with_T80_for_supp.csv")
+    Perovskites.to_csv(output_path+"\\Experiments_with_T80_for_supp.csv",index = False)
 
     # classifying to groups:
     Perovskites['classification'] = ''
@@ -131,7 +125,7 @@ if __name__ == '__main__':
                         'Stability_PCE_end_of_experiment', 'Stability_PCE_T95','Stability_PCE_Ts95','Stability_PCE_T80','Stability_PCE_Ts80','Stability_PCE_Te80',
                         'Stability_PCE_Tse80','Stability_PCE_after_1000_h','Stability_PCE_burn_in_observed','Stability_light_source_type','Stability_protocol',
                         'Stability_potential_bias_load_condition', 'Calculated_T80','logT80', 'classification']]
-    info_for_9_categories.to_csv(output_path+"\\Experiments_with_Encap_and_stability.csv")
+    info_for_9_categories.to_csv(output_path+"\\Experiments_with_Encap_and_stability.csv", index = False)
 
     Graph_titles= ["All experiments","Ambient experiments","Experiments at 65 degrees","Dark Open Circuit Experiments","Light Experiments","Light MPPT Experiments"]
     #preparing data for the graphs X=encapsulation_group X[0]-> all experiments, X[1]-> ambient experiments, X[2]-> experiments in 65deg,
@@ -344,7 +338,9 @@ if __name__ == '__main__':
         t_test.append(['Glass+polymer',None, None, None, None, None,
                                      scipy.stats.ttest_ind(Glass_polymer_logT80[i], Al2O3_logT80[i], axis=0,equal_var=False).pvalue])
         t_test = pd.DataFrame(t_test)
-        t_test.to_csv(output_path +"\\t_test_"+Graph_titles[i] +"_logT80.csv")
-    plt.show()
+        t_test.to_csv(output_path +"\\t_test_"+Graph_titles[i] +"_logT80.csv", index = False)
+        plt.show()
+        plt.savefig(output_path + "\\" + Graph_titles[i] + ".png")
+
     table= pd.DataFrame(table)
-    table.to_csv(output_path +"\\frequency table logT80.csv")
+    table.to_csv(output_path +"\\frequency table logT80.csv", index = False)
