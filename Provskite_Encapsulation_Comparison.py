@@ -339,8 +339,7 @@ if __name__ == '__main__':
                                      scipy.stats.ttest_ind(Glass_polymer_logT80[i], Al2O3_logT80[i], axis=0,equal_var=False).pvalue])
         t_test = pd.DataFrame(t_test)
         t_test.to_csv(output_path +"\\t_test_"+Graph_titles[i] +"_logT80.csv", index = False)
-        plt.show()
-        plt.savefig(output_path + "\\" + Graph_titles[i] + ".png")
-
+        plt.savefig(output_path + "\\box_plot_" + Graph_titles[i] + ".png")
+    plt.show()
     table= pd.DataFrame(table)
     table.to_csv(output_path +"\\frequency table logT80.csv", index = False)
