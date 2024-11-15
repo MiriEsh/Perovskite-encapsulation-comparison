@@ -12,11 +12,15 @@ if __name__ == '__main__':
     output_path = dir_path + "\\outputs"
     Perovskites = pd.read_csv(dir_path + "\\inputs\\Perovsite database query.csv")
 
-    #adding encapsulation info retrieved from the articles:
+    #adding/fixing info retrieved from the articles:
     additional_info = pd.read_csv(dir_path + "\\inputs\\Manual additions.csv")
+    additional_info['Ref_ID'].fillna(0, inplace=True,downcast='infer')
+    additional_info['Ref_ID'] = pd.to_numeric(additional_info['Ref_ID'])
     for i, row in additional_info.iterrows():
         Perovskites.loc[Perovskites.Ref_ID == row['Ref_ID']] = additional_info.loc[i].values
-    print('added/changed encapsulation info using: Manual additions.csv') # contains rows from Perovsite database query.csv with additions/changes in columns 'Encapsulation_stack_sequence', 'Encapsulation_edge_sealing_materials'  (97 rows with encapsulation changes) or Stability_time_total_exposure, Stability_PCE_end_of_experiment (4 rows with PCE info corrections)
+        if row['Ref_ID'] == 0:
+            Perovskites.loc[len(Perovskites)] =additional_info.loc[i].values
+    print('added/changed encapsulation info using: Manual additions.csv') # contains rows from Perovsite database query.csv with additions/changes in columns 'Encapsulation_stack_sequence', 'Encapsulation_edge_sealing_materials'  (97 rows with encapsulation changes) or Stability_time_total_exposure, Stability_PCE_end_of_experiment
 
     #taking out the rows with stability atmosphere N2 or Ar:
     num_of_rows_before_taking_out_atmosphereN2 = len(Perovskites)
@@ -51,8 +55,7 @@ if __name__ == '__main__':
     # if Stability_PCE_end_of_experiment=0 take Stability_PCE_end_of_experiment=0.001 in order to prevent converging ln(0) to -infinity
     Perovskites.loc[Perovskites['Stability_PCE_end_of_experiment'] == 0, 'Stability_PCE_end_of_experiment'] = 0.001
 
-    #BURN IN FALSE:
-    # TAKE T80
+    #BURN IN FALSE (T80 is the defult):
     # T80 doesn't exist take Ts80
     # T80, Ts80 don't exist use T95 via: ln(0.8) * T95/ ln(0.95)
     # T80, Ts80, T95 don't exist ->CALC VIA EXP
@@ -60,11 +63,10 @@ if __name__ == '__main__':
     Perovskites.loc[((Perovskites['Stability_PCE_burn_in_observed'] == False) & (Perovskites['Stability_PCE_T95'].isna()==False)), 'Calculated_T80'] = np.log(0.8) * Perovskites['Stability_PCE_T95'] / np.log(0.95)
     Perovskites.loc[((Perovskites['Stability_PCE_burn_in_observed'] == False) & (Perovskites['Stability_PCE_Ts80'].isna()==False)), 'Calculated_T80'] = Perovskites['Stability_PCE_Ts80']
     Perovskites.loc[((Perovskites['Stability_PCE_burn_in_observed'] == False) & (Perovskites['Stability_PCE_T80'].isna()==False)), 'Calculated_T80'] = Perovskites['Stability_PCE_T80']
-    #BURN IN TRUE:
-    #TAKE TS80
+    #BURN IN TRUE (TS80 is the defult):
     #TS80 doesn't exist - use T80
     #T80 doesn't exist- use Te80
-    #TS80/Te80 don't exist CALC VIA EXP using PCE (1000H)+ END POINT
+    #TS80/Te80 don't exist CALC VIA EXP using PCE(1000H) and PCE(END)
     Perovskites.loc[((Perovskites['Stability_PCE_burn_in_observed'] == True) & (Perovskites['Stability_PCE_after_1000_h'].isna()==False) &
     (Perovskites['Stability_PCE_after_1000_h'] != Perovskites['Stability_PCE_end_of_experiment'])), 'Calculated_T80'] = \
     -np.log(0.8)*(Perovskites['Stability_time_total_exposure']-1000.0)/np.log(Perovskites['Stability_PCE_after_1000_h']/Perovskites['Stability_PCE_end_of_experiment'])
@@ -294,9 +296,8 @@ if __name__ == '__main__':
         ~Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
     Glass_epoxy_logT80.append(Glass_epoxy[(Glass_epoxy['Stability_potential_bias_load_condition'] == 'MPPT') |
                                            (Glass_epoxy['Stability_potential_bias_load_condition'] == 'Passive resistance')]['logT80'].reset_index(drop=True))
-
     table = []
-    table.append(['', 'Foil','Polymer','Glass UV glue','Glass epoxy','Glass butyl rubber','Glass Polymer','Al2O3', 'Total'])
+    table.append(['', 'Foil','Polymer','Glass UV glue','Glass epoxy','Glass butyl rubber','Glass Polymer','Al2O3'])
     my_colors = {'Foil': 'teal', 'Polymer': 'steelblue', 'SLG+UV glue': 'slateblue', 'SLG+epoxy':'darkorchid','SLG+but_rub':'mediumvioletred' ,'SLG+polym': 'sienna', 'Al2O3':'darkkhaki' }
     for i in range(6):
         data_for_box_plot = pd.concat([Foils_T80[i],polymer_T80[i], Glass_UV_glue_T80[i], Glass_epoxy_T80[i],Glass_butyl_rubber_T80[i],Glass_polymer_T80[i],Al2O3_T80[i]], axis =1)  # horizontal_concat
