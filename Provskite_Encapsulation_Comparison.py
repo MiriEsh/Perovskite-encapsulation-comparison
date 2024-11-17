@@ -117,7 +117,7 @@ if __name__ == '__main__':
     Foils= Non_Glass[Non_Glass['Encapsulation_materials'].str.contains('tape|plasma polymers|viewbarrier|Barrier foil|sheets|UHPBF|ITO|Kapton|PEN|PET|NOA', case= False)== True]
     Foils['classification'] = 'Foils'
     Non_Glass = Non_Glass[~Non_Glass.index.isin(Foils.index)]
-    polymer = Non_Glass[Non_Glass['Encapsulation_materials'].str.contains('PVP |Cyanoacrylate|PCL|Carbon-epoxy|Teflon|PDMS|Paraffin|LDPE|Meltronix|Pattex|Thermoplastic|poly|surlyn|EVA|Ethylene|Parylene|EVOH|PMMA',case=False) == True]
+    polymer = Non_Glass[Non_Glass['Encapsulation_materials'].str.contains('PVP |Cyanoacrylate|PCL|Carbon-epoxy|Teflon|PDMS|Paraffin|LDPE|Meltronix|Pattex|Thermoplastic|polyethylene|polymer|surlyn|EVA|Ethylene|Parylene|EVOH|PMMA',case=False) == True]
     polymer['classification'] = 'Polymers'
     # finished classifying to groups
 
@@ -135,11 +135,11 @@ if __name__ == '__main__':
     Glass_butyl_rubber_T80=[]
     Glass_butyl_rubber_T80.append(Glass_butyl_rubber['Calculated_T80'].reset_index(drop=True))
     Glass_butyl_rubber_T80.append(Glass_butyl_rubber[Glass_butyl_rubber['Stability_protocol'].str.contains('1|Other')]['Calculated_T80'].reset_index(drop=True))
-    Glass_butyl_rubber_T80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_protocol'].str.contains('2|3'))&
-                               (~Glass_butyl_rubber['Stability_protocol'].str.contains('IEC'))]['Calculated_T80'].reset_index(drop=True))
-    Glass_butyl_rubber_T80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type']=='Dark')|
-                             (Glass_butyl_rubber['Stability_protocol'].str.contains('D',regex=False))]['Calculated_T80'].reset_index(drop=True))
-    Glass_butyl_rubber_T80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type']!='Dark')&(~Glass_butyl_rubber['Stability_protocol'].str.contains('D',regex=False))]['Calculated_T80'].reset_index(drop=True))
+    Glass_butyl_rubber_T80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_protocol'].str.contains('L|D'))&Glass_butyl_rubber['Stability_protocol'].str.contains('2|3')]['Calculated_T80'].reset_index(drop=True))
+    Glass_butyl_rubber_T80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type']=='Dark')& (
+                                              ~Glass_butyl_rubber['Stability_protocol'].str.contains('D',regex=False))& (
+                                              ~Glass_butyl_rubber['Stability_protocol'].str.contains('V',regex=False))]['Calculated_T80'].reset_index(drop=True))
+    Glass_butyl_rubber_T80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type']!='Dark')&(~Glass_butyl_rubber['Stability_protocol'].str.contains('D|V',regex=False))]['Calculated_T80'].reset_index(drop=True))
     Glass_butyl_rubber_T80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_potential_bias_load_condition'] == 'MPPT') |
                                             (Glass_butyl_rubber['Stability_potential_bias_load_condition'] == 'Passive resistance')]['Calculated_T80'].reset_index(drop=True))
 
@@ -149,14 +149,13 @@ if __name__ == '__main__':
         Glass_butyl_rubber[Glass_butyl_rubber['Stability_protocol'].str.contains('1|Other')]['logT80'].reset_index(
             drop=True))
     Glass_butyl_rubber_logT80.append(
-        Glass_butyl_rubber[(Glass_butyl_rubber['Stability_protocol'].str.contains('2|3')) &
-                           (~Glass_butyl_rubber['Stability_protocol'].str.contains('IEC'))]['logT80'].reset_index(
-            drop=True))
+        Glass_butyl_rubber[(Glass_butyl_rubber['Stability_protocol'].str.contains('L|D'))&(Glass_butyl_rubber['Stability_protocol'].str.contains('2|3'))]['logT80'].reset_index(drop=True))
     Glass_butyl_rubber_logT80.append(Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type'] == 'Dark') |
-                                                         (Glass_butyl_rubber['Stability_protocol'].str.contains('D',regex=False))]['logT80'].reset_index(drop=True))
+                                                         (Glass_butyl_rubber['Stability_protocol'].str.contains('D',regex=False))|(Glass_butyl_rubber['Stability_protocol'].str.contains('V',regex=False))]['logT80'].reset_index(drop=True))
     Glass_butyl_rubber_logT80.append(Glass_butyl_rubber[
                                           (Glass_butyl_rubber['Stability_light_source_type'] != 'Dark') & (
-                                              ~Glass_butyl_rubber['Stability_protocol'].str.contains('D',regex=False))]['logT80'].reset_index(drop=True))
+                                              ~Glass_butyl_rubber['Stability_protocol'].str.contains('D',regex=False))& (
+                                              ~Glass_butyl_rubber['Stability_protocol'].str.contains('V',regex=False))]['logT80'].reset_index(drop=True))
     Glass_butyl_rubber_logT80.append(
         Glass_butyl_rubber[(Glass_butyl_rubber['Stability_potential_bias_load_condition'] == 'MPPT') |
                            (Glass_butyl_rubber['Stability_potential_bias_load_condition'] == 'Passive resistance')]['logT80'].reset_index(drop=True))
@@ -164,10 +163,10 @@ if __name__ == '__main__':
     Glass_polymer_T80=[]
     Glass_polymer_T80.append(Glass_polymer['Calculated_T80'].reset_index(drop=True))
     Glass_polymer_T80.append(Glass_polymer[Glass_polymer['Stability_protocol'].str.contains('1|Other')]['Calculated_T80'].reset_index(drop=True))
-    Glass_polymer_T80.append(Glass_polymer[Glass_polymer['Stability_protocol'].str.contains('2|3')]['Calculated_T80'].reset_index(drop=True))
+    Glass_polymer_T80.append(Glass_polymer[(Glass_polymer['Stability_protocol'].str.contains('L|D'))&(Glass_polymer['Stability_protocol'].str.contains('2|3'))]['Calculated_T80'].reset_index(drop=True))
     Glass_polymer_T80.append(Glass_polymer[(Glass_polymer['Stability_light_source_type'] == 'Dark') |
-                                   (Glass_polymer['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
-    Glass_polymer_T80.append(Glass_polymer[(Glass_polymer['Stability_light_source_type'] != 'Dark')&(~Glass_polymer['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
+                                   (Glass_polymer['Stability_protocol'].str.contains('D', regex=False))|(Glass_polymer['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
+    Glass_polymer_T80.append(Glass_polymer[(Glass_polymer['Stability_light_source_type'] != 'Dark')&(~Glass_polymer['Stability_protocol'].str.contains('D', regex=False))&(~Glass_polymer['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
     Glass_polymer_T80.append(Glass_polymer[(Glass_polymer['Stability_potential_bias_load_condition'] == 'MPPT') |
                                       (Glass_polymer['Stability_potential_bias_load_condition'] == 'Passive resistance')]['Calculated_T80'].reset_index(drop=True))
     Glass_polymer_logT80 = []
@@ -175,33 +174,35 @@ if __name__ == '__main__':
     Glass_polymer_logT80.append(
         Glass_polymer[Glass_polymer['Stability_protocol'].str.contains('1|Other')]['logT80'].reset_index(drop=True))
     Glass_polymer_logT80.append(
-        Glass_polymer[Glass_polymer['Stability_protocol'].str.contains('2|3')]['logT80'].reset_index(drop=True))
+        Glass_polymer[(Glass_polymer['Stability_protocol'].str.contains('L|D'))&(Glass_polymer['Stability_protocol'].str.contains('2|3'))]['logT80'].reset_index(drop=True))
     Glass_polymer_logT80.append(Glass_polymer[(Glass_polymer['Stability_light_source_type'] == 'Dark') |
-                                               (Glass_polymer['Stability_protocol'].str.contains('D', regex=False))][
+                                               (Glass_polymer['Stability_protocol'].str.contains('D', regex=False))|
+                                               (Glass_polymer['Stability_protocol'].str.contains('V', regex=False))][
                                      'logT80'].reset_index(drop=True))
     Glass_polymer_logT80.append(Glass_polymer[(Glass_polymer['Stability_light_source_type'] != 'Dark') & (
-        ~Glass_polymer['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+        ~Glass_polymer['Stability_protocol'].str.contains('D', regex=False))& (~Glass_polymer['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Glass_polymer_logT80.append(Glass_polymer[(Glass_polymer['Stability_potential_bias_load_condition'] == 'MPPT') |
                                                (Glass_polymer['Stability_potential_bias_load_condition'] == 'Passive resistance')]['logT80'].reset_index(drop=True))
 
     Al2O3_T80=[]
     Al2O3_T80.append(Al2O3['Calculated_T80'].reset_index(drop=True))
     Al2O3_T80.append(Al2O3[Al2O3['Stability_protocol'].str.contains('1|Other')]['Calculated_T80'].reset_index(drop=True))
-    Al2O3_T80.append(Al2O3[Al2O3['Stability_protocol'].str.contains('2|3')]['Calculated_T80'].reset_index(drop=True))
+    Al2O3_T80.append(Al2O3[(Al2O3['Stability_protocol'].str.contains('L|D'))&((Al2O3['Stability_protocol'].str.contains('2|3')))]['Calculated_T80'].reset_index(drop=True))
     Al2O3_T80.append(Al2O3[(Al2O3['Stability_light_source_type'] == 'Dark') |
-                       (Al2O3['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
-    Al2O3_T80.append(Al2O3[(Al2O3['Stability_light_source_type'] != 'Dark')&(~Al2O3['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
+                       (Al2O3['Stability_protocol'].str.contains('D', regex=False))|(Al2O3['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
+    Al2O3_T80.append(Al2O3[(Al2O3['Stability_light_source_type'] != 'Dark')&(~Al2O3['Stability_protocol'].str.contains('D', regex=False))
+                     &(~Al2O3['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
     Al2O3_T80.append(Al2O3[(Al2O3['Stability_potential_bias_load_condition'] == 'MPPT') |
                       (Al2O3['Stability_potential_bias_load_condition'] == 'Passive resistance')]['Calculated_T80'].reset_index(drop=True))
 
     Al2O3_logT80 = []
     Al2O3_logT80.append(Al2O3['logT80'].reset_index(drop=True))
     Al2O3_logT80.append(Al2O3[Al2O3['Stability_protocol'].str.contains('1|Other')]['logT80'].reset_index(drop=True))
-    Al2O3_logT80.append(Al2O3[Al2O3['Stability_protocol'].str.contains('2|3')]['logT80'].reset_index(drop=True))
+    Al2O3_logT80.append(Al2O3[(Al2O3['Stability_protocol'].str.contains('L|D'))&(Al2O3['Stability_protocol'].str.contains('2|3'))]['logT80'].reset_index(drop=True))
     Al2O3_logT80.append(Al2O3[(Al2O3['Stability_light_source_type'] == 'Dark') |
-                               (Al2O3['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+                               (Al2O3['Stability_protocol'].str.contains('D', regex=False))|(Al2O3['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Al2O3_logT80.append(Al2O3[(Al2O3['Stability_light_source_type'] != 'Dark') & (
-        ~Al2O3['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+        ~Al2O3['Stability_protocol'].str.contains('D', regex=False))&(~Al2O3['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Al2O3_logT80.append(Al2O3[(Al2O3['Stability_potential_bias_load_condition'] == 'MPPT') |
                                (Al2O3['Stability_potential_bias_load_condition'] == 'Passive resistance')][
                              'logT80'].reset_index(drop=True))
@@ -209,7 +210,7 @@ if __name__ == '__main__':
     Foils_T80=[]
     Foils_T80.append(Foils['Calculated_T80'].reset_index(drop=True))
     Foils_T80.append(Foils[Foils['Stability_protocol'].str.contains('1|Other')]['Calculated_T80'].reset_index(drop=True))
-    Foils_T80.append(Foils[Foils['Stability_protocol'].str.contains('2|3')]['Calculated_T80'].reset_index(drop=True))
+    Foils_T80.append(Foils[(Foils['Stability_protocol'].str.contains('L|D'))&((Foils['Stability_protocol'].str.contains('2|3')))]['Calculated_T80'].reset_index(drop=True))
     Foils_T80.append(Foils[(Foils['Stability_light_source_type'] == 'Dark') |
                        (Foils['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
     Foils_T80.append(Foils[(Foils['Stability_light_source_type'] != 'Dark')&(~Foils['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
@@ -219,21 +220,21 @@ if __name__ == '__main__':
     Foils_logT80 = []
     Foils_logT80.append(Foils['logT80'].reset_index(drop=True))
     Foils_logT80.append(Foils[Foils['Stability_protocol'].str.contains('1|Other')]['logT80'].reset_index(drop=True))
-    Foils_logT80.append(Foils[Foils['Stability_protocol'].str.contains('2|3')]['logT80'].reset_index(drop=True))
+    Foils_logT80.append(Foils[(Foils['Stability_protocol'].str.contains('L|D'))&(Foils['Stability_protocol'].str.contains('2|3'))]['logT80'].reset_index(drop=True))
     Foils_logT80.append(Foils[(Foils['Stability_light_source_type'] == 'Dark') |
-                               (Foils['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+                               (Foils['Stability_protocol'].str.contains('D', regex=False))| (Foils['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Foils_logT80.append(Foils[(Foils['Stability_light_source_type'] != 'Dark') & (
-        ~Foils['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+        ~Foils['Stability_protocol'].str.contains('D', regex=False))& ( ~Foils['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Foils_logT80.append(Foils[(Foils['Stability_potential_bias_load_condition'] == 'MPPT') |
                                (Foils['Stability_potential_bias_load_condition'] == 'Passive resistance')]['logT80'].reset_index(drop=True))
 
     polymer_T80=[]
     polymer_T80.append(polymer['Calculated_T80'].reset_index(drop=True))
     polymer_T80.append(polymer[polymer['Stability_protocol'].str.contains('1|Other')]['Calculated_T80'].reset_index(drop=True))
-    polymer_T80.append(polymer[polymer['Stability_protocol'].str.contains('2|3')]['Calculated_T80'].reset_index(drop=True))
+    polymer_T80.append(polymer[(polymer['Stability_protocol'].str.contains('L|D'))&(polymer['Stability_protocol'].str.contains('2|3'))]['Calculated_T80'].reset_index(drop=True))
     polymer_T80.append(polymer[(polymer['Stability_light_source_type'] == 'Dark') |
-                           (polymer['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
-    polymer_T80.append(polymer[(polymer['Stability_light_source_type'] != 'Dark')&(~polymer['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
+                           (polymer['Stability_protocol'].str.contains('D', regex=False))|(polymer['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
+    polymer_T80.append(polymer[(polymer['Stability_light_source_type'] != 'Dark')&(~polymer['Stability_protocol'].str.contains('D', regex=False))&(~polymer['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
     polymer_T80.append(polymer[(polymer['Stability_potential_bias_load_condition'] == 'MPPT') |
                           (polymer['Stability_potential_bias_load_condition'] == 'Passive resistance')]['Calculated_T80'].reset_index(drop=True))
 
@@ -241,11 +242,11 @@ if __name__ == '__main__':
     polymer_logT80.append(polymer['logT80'].reset_index(drop=True))
     polymer_logT80.append(
         polymer[polymer['Stability_protocol'].str.contains('1|Other')]['logT80'].reset_index(drop=True))
-    polymer_logT80.append(polymer[polymer['Stability_protocol'].str.contains('2|3')]['logT80'].reset_index(drop=True))
+    polymer_logT80.append(polymer[(polymer['Stability_protocol'].str.contains('L|D'))&(polymer['Stability_protocol'].str.contains('2|3'))]['logT80'].reset_index(drop=True))
     polymer_logT80.append(polymer[(polymer['Stability_light_source_type'] == 'Dark') |
-                                   (polymer['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+                                   (polymer['Stability_protocol'].str.contains('D', regex=False))|(polymer['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     polymer_logT80.append(polymer[(polymer['Stability_light_source_type'] != 'Dark') & (
-        ~polymer['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+        ~polymer['Stability_protocol'].str.contains('D', regex=False))& (~polymer['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     polymer_logT80.append(polymer[(polymer['Stability_potential_bias_load_condition'] == 'MPPT') |
                                    (polymer['Stability_potential_bias_load_condition'] == 'Passive resistance')][
                                'logT80'].reset_index(drop=True))
@@ -253,10 +254,10 @@ if __name__ == '__main__':
     Glass_UV_glue_T80=[]
     Glass_UV_glue_T80.append(Glass_UV_glue['Calculated_T80'].reset_index(drop=True))
     Glass_UV_glue_T80.append(Glass_UV_glue[Glass_UV_glue['Stability_protocol'].str.contains('1|Other')]['Calculated_T80'].reset_index(drop=True))
-    Glass_UV_glue_T80.append(Glass_UV_glue[Glass_UV_glue['Stability_protocol'].str.contains('2|3')]['Calculated_T80'].reset_index(drop=True))
+    Glass_UV_glue_T80.append(Glass_UV_glue[(Glass_UV_glue['Stability_protocol'].str.contains('L|D'))&(Glass_UV_glue['Stability_protocol'].str.contains('2|3'))]['Calculated_T80'].reset_index(drop=True))
     Glass_UV_glue_T80.append(Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] == 'Dark') |
-                                       (Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
-    Glass_UV_glue_T80.append(Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] != 'Dark')&(~Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
+                                       (Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))|(Glass_UV_glue['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
+    Glass_UV_glue_T80.append(Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] != 'Dark')&(~Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))&(~Glass_UV_glue['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
     Glass_UV_glue_T80.append(Glass_UV_glue[(Glass_UV_glue['Stability_potential_bias_load_condition'] == 'MPPT') |
                                       (Glass_UV_glue['Stability_potential_bias_load_condition'] == 'Passive resistance')]['Calculated_T80'].reset_index(drop=True))
 
@@ -265,21 +266,20 @@ if __name__ == '__main__':
     Glass_UV_glue_logT80.append(
         Glass_UV_glue[Glass_UV_glue['Stability_protocol'].str.contains('1|Other')]['logT80'].reset_index(drop=True))
     Glass_UV_glue_logT80.append(
-        Glass_UV_glue[Glass_UV_glue['Stability_protocol'].str.contains('2|3')]['logT80'].reset_index(drop=True))
+        Glass_UV_glue[(Glass_UV_glue['Stability_protocol'].str.contains('L|D'))&(Glass_UV_glue['Stability_protocol'].str.contains('2|3'))]['logT80'].reset_index(drop=True))
     Glass_UV_glue_logT80.append(Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] == 'Dark') |
-                                               (Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
-    Glass_UV_glue_logT80.append(Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] != 'Dark') & (
-        ~Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+                                               (Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))| (Glass_UV_glue['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
+    Glass_UV_glue_logT80.append(Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] != 'Dark') & (~Glass_UV_glue['Stability_protocol'].str.contains('D', regex=False))& (~Glass_UV_glue['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Glass_UV_glue_logT80.append(Glass_UV_glue[(Glass_UV_glue['Stability_potential_bias_load_condition'] == 'MPPT') |
                                                (Glass_UV_glue['Stability_potential_bias_load_condition'] == 'Passive resistance')]['logT80'].reset_index(drop=True))
 
     Glass_epoxy_T80=[]
     Glass_epoxy_T80.append(Glass_epoxy['Calculated_T80'].reset_index(drop=True))
     Glass_epoxy_T80.append(Glass_epoxy[Glass_epoxy['Stability_protocol'].str.contains('1|Other')]['Calculated_T80'].reset_index(drop=True))
-    Glass_epoxy_T80.append(Glass_epoxy[Glass_epoxy['Stability_protocol'].str.contains('2|3')]['Calculated_T80'].reset_index(drop=True))
+    Glass_epoxy_T80.append(Glass_epoxy[(Glass_epoxy['Stability_protocol'].str.contains('L|D'))&(Glass_epoxy['Stability_protocol'].str.contains('2|3'))]['Calculated_T80'].reset_index(drop=True))
     Glass_epoxy_T80.append(Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] == 'Dark') |
-                                   (Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
-    Glass_epoxy_T80.append(Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] != 'Dark')&(~Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))]['Calculated_T80'].reset_index(drop=True))
+                                   (Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))| (Glass_epoxy['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
+    Glass_epoxy_T80.append(Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] != 'Dark')&(~Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))&(~Glass_epoxy['Stability_protocol'].str.contains('V', regex=False))]['Calculated_T80'].reset_index(drop=True))
     Glass_epoxy_T80.append(Glass_epoxy[(Glass_epoxy['Stability_potential_bias_load_condition'] == 'MPPT') |
                                   (Glass_epoxy['Stability_potential_bias_load_condition'] == 'Passive resistance')]['Calculated_T80'].reset_index(drop=True))
 
@@ -288,12 +288,11 @@ if __name__ == '__main__':
     Glass_epoxy_logT80.append(
         Glass_epoxy[Glass_epoxy['Stability_protocol'].str.contains('1|Other')]['logT80'].reset_index(drop=True))
     Glass_epoxy_logT80.append(
-        Glass_epoxy[Glass_epoxy['Stability_protocol'].str.contains('2|3')]['logT80'].reset_index(drop=True))
+        Glass_epoxy[(Glass_epoxy['Stability_protocol'].str.contains('L|D'))&(Glass_epoxy['Stability_protocol'].str.contains('2|3'))]['logT80'].reset_index(drop=True))
     Glass_epoxy_logT80.append(Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] == 'Dark') |
-                                           (Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))][
-                                   'logT80'].reset_index(drop=True))
+                                           (Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))| (Glass_epoxy['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Glass_epoxy_logT80.append(Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] != 'Dark') & (
-        ~Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))]['logT80'].reset_index(drop=True))
+        ~Glass_epoxy['Stability_protocol'].str.contains('D', regex=False))& ( ~Glass_epoxy['Stability_protocol'].str.contains('V', regex=False))]['logT80'].reset_index(drop=True))
     Glass_epoxy_logT80.append(Glass_epoxy[(Glass_epoxy['Stability_potential_bias_load_condition'] == 'MPPT') |
                                            (Glass_epoxy['Stability_potential_bias_load_condition'] == 'Passive resistance')]['logT80'].reset_index(drop=True))
     table = []
