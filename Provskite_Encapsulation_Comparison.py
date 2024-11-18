@@ -82,18 +82,14 @@ if __name__ == '__main__':
 
     experiments_with_T80 = Perovskites[
         ['Ref_ID', 'Ref_DOI_number', 'Perovskite_composition_short_form', 'JV_reverse_scan_PCE', 'JV_forward_scan_PCE',
-         'JV_default_PCE',
-         'Stability_PCE_initial_value',
-         'JV_default_PCE_scan_direction',
-         'Stabilised_performance_PCE',
-         'Stability_PCE_end_of_experiment', 'Stability_time_total_exposure',
-         'Perovskite_thickness', 'Perovskite_deposition_thermal_annealing_temperature',
-         'Perovskite_deposition_thermal_annealing_time', 'Calculated_T80']]
+         'JV_default_PCE','Stability_PCE_initial_value','JV_default_PCE_scan_direction',
+         'Stabilised_performance_PCE','Stability_PCE_end_of_experiment', 'Stability_time_total_exposure',
+         'Perovskite_thickness', 'Perovskite_deposition_thermal_annealing_temperature','Perovskite_deposition_thermal_annealing_time', 'Calculated_T80']]
     Perovskites.to_csv(output_path+"\\Experiments_with_T80_for_supp.csv",index = False)
 
     # classifying to groups:
     Perovskites['classification'] = ''
-    Other = Perovskites[Perovskites['Encapsulation_materials'].str.contains('glass cans|Graphene|Field|particles|Polymer hydrophobic film|Eu(TTA)2(Phen)MAA|Carbon-nt|3M acrylic elastomer (3M VHB 4905) ', case=False) == True]
+    Other = Perovskites[Perovskites['Encapsulation_materials'].str.contains('glass cans', case=False) == True]
     Other['classification'] = 'Other'
     Perovskites = Perovskites[~Perovskites.index.isin(Other.index)]
     Al2O3 = Perovskites[Perovskites['Encapsulation_materials'].str.contains('Al2O3', case=False) == True]
@@ -109,20 +105,23 @@ if __name__ == '__main__':
     Glass_butyl_rubber = Glass[Glass['Encapsulation_materials'].str.contains('Polyisobutene|Polyisobutylene|butyl', case=False) == True]
     Glass_butyl_rubber['classification'] = 'Glass + Butyl rubber'
     Glass = Glass[~Glass.index.isin(Glass_butyl_rubber.index)]
-    Glass_polymer = Glass[Glass['Encapsulation_materials'].str.contains('Thermoplastic|poly|surlyn|EVA|Ethylene|Parylene|Kapton|NOA',case =False) == True]
+    Glass_polymer = Glass[Glass['Encapsulation_materials'].str.contains('Thermoplastic|polyethylene|polymer|surlyn|EVA|Ethylene|Parylene|Kapton|NOA',case =False) == True]
     Glass_polymer['classification'] = 'Glass + polymer'
-    Glass_No_sealant = Glass[Glass['Encapsulation_materials'].str.contains('Thermoplastic|poly|surlyn|EVA|Ethylene|Parylene|Kapton|Polyisobutylene|butyl|UV|ultraviolet|Light| LT|NOA|epoxy|Araldite|Ossila', case=False) == False]
+    Glass_No_sealant = Glass[Glass['Encapsulation_materials'].str.contains('Thermoplastic|polyethylene|polymer|surlyn|EVA|Ethylene|Parylene|Kapton|Polyisobutylene|butyl|UV|ultraviolet|Light| LT|NOA|epoxy|Araldite|Ossila', case=False) == False]
     Glass_No_sealant['classification'] = 'Glass no sealant'
     Non_Glass = Perovskites[Perovskites['Encapsulation_materials'].str.contains('SLG|Glass', case=False) == False]
-    Foils= Non_Glass[Non_Glass['Encapsulation_materials'].str.contains('tape|plasma polymers|viewbarrier|Barrier foil|sheets|UHPBF|ITO|Kapton|PEN|PET|NOA', case= False)== True]
+    Foils= Non_Glass[Non_Glass['Encapsulation_materials'].str.contains('tape|viewbarrier|Barrier foil|sheets|UHPBF|Kapton|PEN|PET|NOA', case= False)== True]
     Foils['classification'] = 'Foils'
     Non_Glass = Non_Glass[~Non_Glass.index.isin(Foils.index)]
     Polymer = Non_Glass[Non_Glass['Encapsulation_materials'].str.contains('PVP |Cyanoacrylate|PCL|Carbon-epoxy|Teflon|PDMS|Paraffin|LDPE|Meltronix|Pattex|Thermoplastic|polyethylene|polymer|surlyn|EVA|Ethylene|Parylene|EVOH|PMMA',case=False) == True]
     Polymer['classification'] = 'Polymers'
+    Non_Glass_left = Non_Glass[~Non_Glass.index.isin(Polymer.index)]
+    Other = pd.concat([Other, Glass_No_sealant, Non_Glass_left])
+    Other['classification'] = 'Other'
     # finished classifying to groups
 
     info_for_9_categories = pd.concat(
-        [Other, Glass_epoxy,Glass_UV_glue, Glass_polymer, Glass_butyl_rubber, Glass_No_sealant, Al2O3, Foils, Polymer])
+        [Glass_epoxy,Glass_UV_glue, Glass_polymer, Glass_butyl_rubber, Al2O3, Foils, Polymer, Other])
     all_info_for_analysis = info_for_9_categories[['Ref_ID', 'Ref_DOI_number', 'Encapsulation_stack_sequence', 'Encapsulation_edge_sealing_materials', 'Stability_time_total_exposure',
                         'Stability_PCE_end_of_experiment', 'Stability_PCE_T95','Stability_PCE_Ts95','Stability_PCE_T80','Stability_PCE_Ts80','Stability_PCE_Te80',
                         'Stability_PCE_Tse80','Stability_PCE_after_1000_h','Stability_PCE_burn_in_observed','Stability_light_source_type','Stability_protocol',
