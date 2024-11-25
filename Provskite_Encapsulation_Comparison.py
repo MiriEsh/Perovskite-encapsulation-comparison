@@ -124,7 +124,7 @@ if __name__ == '__main__':
     Graph_titles= ["All experiments","Ambient experiments","Experiments at 65 degrees","Dark Open Circuit Experiments","Light Experiments","Light MPPT Experiments"]
     #preparing data for the graphs X=encapsulation_group X[0]-> all experiments, X[1]-> ambient experiments, X[2]-> experiments in 65deg,
     # X[3]-> dark OC experiments, X[4]->light OC experiments, X[5]-> light MPP experiments:
-    Glass_butyl_rubber_ambient = Glass_butyl_rubber[~Glass_butyl_rubber['Stability_protocol'].str.contains('L-2|L-3|D-2|V-2|V-3|LC-2|LC-3|IEC')]
+    Glass_butyl_rubber_ambient = Glass_butyl_rubber[~Glass_butyl_rubber['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Glass_butyl_rubber_65_deg = Glass_butyl_rubber[(Glass_butyl_rubber['Stability_protocol'].str.contains('L|D|V|LC'))&(Glass_butyl_rubber['Stability_protocol'].str.contains('2|3'))]
     Glass_butyl_rubber_dark = Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type'] == 'Dark') |
                                                          (Glass_butyl_rubber['Stability_protocol'].str.contains('D'))|(Glass_butyl_rubber['Stability_protocol'].str.contains('V'))]
@@ -137,7 +137,7 @@ if __name__ == '__main__':
     Glass_butyl_rubber_logT80 = [Glass_butyl_rubber['logT80'].reset_index(drop=True),Glass_butyl_rubber_ambient['logT80'].reset_index(drop=True), Glass_butyl_rubber_65_deg['logT80'].reset_index(drop=True), Glass_butyl_rubber_dark['logT80'].reset_index(drop=True),
                               Glass_butyl_rubber_light['logT80'].reset_index(drop=True), Glass_butyl_rubber_MPPT['logT80'].reset_index(drop=True)]  # contains the logT80 of all the subdivisions
 
-    Glass_polymer_ambient = Glass_polymer[~Glass_polymer['Stability_protocol'].str.contains('L-2|L-3|D-2|V-2|V-3|LC-2|LC-3|IEC')]
+    Glass_polymer_ambient = Glass_polymer[~Glass_polymer['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Glass_polymer_65_deg = Glass_polymer[(Glass_polymer['Stability_protocol'].str.contains('L|D|V|LC')) & (
         Glass_polymer['Stability_protocol'].str.contains('2|3'))]
     Glass_polymer_dark = Glass_polymer[(Glass_polymer['Stability_light_source_type'] == 'Dark') |
@@ -154,7 +154,7 @@ if __name__ == '__main__':
                             Glass_polymer_65_deg['logT80'].reset_index(drop=True),Glass_polymer_dark['logT80'].reset_index(drop=True),
                             Glass_polymer_light['logT80'].reset_index(drop=True),Glass_polymer_MPPT['logT80'].reset_index(drop=True)]  # contains the logT80 of all the subdivisions
 
-    Al2O3_ambient = Al2O3[~Al2O3['Stability_protocol'].str.contains('L-2|L-3|D-2|V-2|V-3|LC-2|LC-3|IEC')]
+    Al2O3_ambient = Al2O3[~Al2O3['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Al2O3_65_deg = Al2O3[(Al2O3['Stability_protocol'].str.contains('L|D|V|LC')) & (
         Al2O3['Stability_protocol'].str.contains('2|3'))]
     Al2O3_dark = Al2O3[(Al2O3['Stability_light_source_type'] == 'Dark') |(Al2O3['Stability_protocol'].str.contains('D')) | (
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     Al2O3_logT80 = [Al2O3['logT80'].reset_index(drop=True),Al2O3_ambient['logT80'].reset_index(drop=True),
                     Al2O3_65_deg['logT80'].reset_index(drop=True),Al2O3_dark['logT80'].reset_index(drop=True),
                     Al2O3_light['logT80'].reset_index(drop=True),Al2O3_MPPT['logT80'].reset_index(drop=True)]  # contains the logT80 of all the subdivisions
-    Foils_ambient = Foils[~Foils['Stability_protocol'].str.contains('L-2|L-3|D-2|V-2|V-3|LC-2|LC-3|IEC')]
+    Foils_ambient = Foils[~Foils['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Foils_65_deg = Foils[(Foils['Stability_protocol'].str.contains('L|D|V|LC')) & (Foils['Stability_protocol'].str.contains('2|3'))]
     Foils_dark = Foils[(Foils['Stability_light_source_type'] == 'Dark') |
                        (Foils['Stability_protocol'].str.contains('D')) | (Foils['Stability_protocol'].str.contains('V'))]
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     Foils_logT80 = [Foils['logT80'].reset_index(drop=True),Foils_ambient['logT80'].reset_index(drop=True),
                     Foils_65_deg['logT80'].reset_index(drop=True),Foils_dark['logT80'].reset_index(drop=True),
                     Foils_light['logT80'].reset_index(drop=True),Foils_MPPT['logT80'].reset_index(drop=True)]  # contains the logT80 of all the subdivisions
-    Polymer_ambient = Polymer[~Polymer['Stability_protocol'].str.contains('L-2|L-3|D-2|V-2|V-3|LC-2|LC-3|IEC')]
+    Polymer_ambient = Polymer[~Polymer['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Polymer_65_deg = Polymer[(Polymer['Stability_protocol'].str.contains('L|D|V|LC')) & (Polymer['Stability_protocol'].str.contains('2|3'))]
     Polymer_dark = Polymer[(Polymer['Stability_light_source_type'] == 'Dark') |
                        (Polymer['Stability_protocol'].str.contains('D')) | (Polymer['Stability_protocol'].str.contains('V'))]
@@ -198,7 +198,7 @@ if __name__ == '__main__':
     Polymer_logT80 = [Polymer['logT80'].reset_index(drop=True),Polymer_ambient['logT80'].reset_index(drop=True),
                     Polymer_65_deg['logT80'].reset_index(drop=True),Polymer_dark['logT80'].reset_index(drop=True),
                     Polymer_light['logT80'].reset_index(drop=True),Polymer_MPPT['logT80'].reset_index(drop=True)]  # contains the logT80 of all the subdivisions
-    Glass_UV_glue_ambient = Glass_UV_glue[~Glass_UV_glue['Stability_protocol'].str.contains('L-2|L-3|D-2|V-2|V-3|LC-2|LC-3|IEC')]
+    Glass_UV_glue_ambient = Glass_UV_glue[~Glass_UV_glue['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Glass_UV_glue_65_deg = Glass_UV_glue[(Glass_UV_glue['Stability_protocol'].str.contains('L|D|V|LC')) & (
         Glass_UV_glue['Stability_protocol'].str.contains('2|3'))]
     Glass_UV_glue_dark = Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] == 'Dark') |
@@ -215,7 +215,7 @@ if __name__ == '__main__':
                     Glass_UV_glue_65_deg['logT80'].reset_index(drop=True),Glass_UV_glue_dark['logT80'].reset_index(drop=True),
                     Glass_UV_glue_light['logT80'].reset_index(drop=True),Glass_UV_glue_MPPT['logT80'].reset_index(drop=True)]  # contains the logT80 of all the subdivisions
 
-    Glass_epoxy_ambient = Glass_epoxy[~Glass_epoxy['Stability_protocol'].str.contains('L-2|L-3|D-2|V-2|V-3|LC-2|LC-3|IEC')]
+    Glass_epoxy_ambient = Glass_epoxy[~Glass_epoxy['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Glass_epoxy_65_deg = Glass_epoxy[(Glass_epoxy['Stability_protocol'].str.contains('L|D|V|LC')) & (Glass_epoxy['Stability_protocol'].str.contains('2|3'))]
     Glass_epoxy_dark = Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] == 'Dark') |
                                        (Glass_epoxy['Stability_protocol'].str.contains('D')) | (
