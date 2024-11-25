@@ -127,9 +127,9 @@ if __name__ == '__main__':
     Glass_butyl_rubber_ambient = Glass_butyl_rubber[~Glass_butyl_rubber['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Glass_butyl_rubber_65_deg = Glass_butyl_rubber[(Glass_butyl_rubber['Stability_protocol'].str.contains('L|D|V|LC'))&(Glass_butyl_rubber['Stability_protocol'].str.contains('2|3'))]
     Glass_butyl_rubber_dark = Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type'] == 'Dark') |
-                                                         (Glass_butyl_rubber['Stability_protocol'].str.contains('D'))|(Glass_butyl_rubber['Stability_protocol'].str.contains('V'))]
+                                                         (Glass_butyl_rubber['Stability_protocol'].str.contains('D|V|T'))]
     Glass_butyl_rubber_light = Glass_butyl_rubber[(Glass_butyl_rubber['Stability_light_source_type'] != 'Dark') & (
-                                              ~Glass_butyl_rubber['Stability_protocol'].str.contains('D'))& (~Glass_butyl_rubber['Stability_protocol'].str.contains('V'))]
+                                              ~Glass_butyl_rubber['Stability_protocol'].str.contains('D'))& (~Glass_butyl_rubber['Stability_protocol'].str.contains('V'))&(~Glass_butyl_rubber['Stability_protocol'].str.contains('T'))]
     Glass_butyl_rubber_MPPT = Glass_butyl_rubber[(Glass_butyl_rubber['Stability_potential_bias_load_condition'] == 'MPPT') |
                                             (Glass_butyl_rubber['Stability_potential_bias_load_condition'] == 'Passive resistance')]
     Glass_butyl_rubber_T80 = [Glass_butyl_rubber['Calculated_T80'].reset_index(drop=True),Glass_butyl_rubber_ambient['Calculated_T80'].reset_index(drop=True), Glass_butyl_rubber_65_deg['Calculated_T80'].reset_index(drop=True), Glass_butyl_rubber_dark['Calculated_T80'].reset_index(drop=True),
@@ -141,10 +141,9 @@ if __name__ == '__main__':
     Glass_polymer_65_deg = Glass_polymer[(Glass_polymer['Stability_protocol'].str.contains('L|D|V|LC')) & (
         Glass_polymer['Stability_protocol'].str.contains('2|3'))]
     Glass_polymer_dark = Glass_polymer[(Glass_polymer['Stability_light_source_type'] == 'Dark') |
-                                        (Glass_polymer['Stability_protocol'].str.contains('D')) | (
-                                        Glass_polymer['Stability_protocol'].str.contains('V'))]
+                                                         (Glass_polymer['Stability_protocol'].str.contains('D|V|T'))]
     Glass_polymer_light = Glass_polymer[(Glass_polymer['Stability_light_source_type'] != 'Dark') & (
-        ~Glass_polymer['Stability_protocol'].str.contains('D')) & ( ~Glass_polymer['Stability_protocol'].str.contains('V'))]
+                                              ~Glass_polymer['Stability_protocol'].str.contains('D'))& (~Glass_polymer['Stability_protocol'].str.contains('V'))&(~Glass_polymer['Stability_protocol'].str.contains('T'))]
     Glass_polymer_MPPT = Glass_polymer[(Glass_polymer['Stability_potential_bias_load_condition'] == 'MPPT') |
         (Glass_polymer['Stability_potential_bias_load_condition'] == 'Passive resistance')]
     Glass_polymer_T80 = [Glass_polymer['Calculated_T80'].reset_index(drop=True),Glass_polymer_ambient['Calculated_T80'].reset_index(drop=True),
@@ -157,10 +156,10 @@ if __name__ == '__main__':
     Al2O3_ambient = Al2O3[~Al2O3['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Al2O3_65_deg = Al2O3[(Al2O3['Stability_protocol'].str.contains('L|D|V|LC')) & (
         Al2O3['Stability_protocol'].str.contains('2|3'))]
-    Al2O3_dark = Al2O3[(Al2O3['Stability_light_source_type'] == 'Dark') |(Al2O3['Stability_protocol'].str.contains('D')) | (
-                                           Al2O3['Stability_protocol'].str.contains('V'))]
+    Al2O3_dark = Al2O3[(Al2O3['Stability_light_source_type'] == 'Dark') |
+                                                         (Al2O3['Stability_protocol'].str.contains('D|V|T'))]
     Al2O3_light = Al2O3[(Al2O3['Stability_light_source_type'] != 'Dark') & (
-        ~Al2O3['Stability_protocol'].str.contains('D')) & (~Al2O3['Stability_protocol'].str.contains('V'))]
+                                              ~Al2O3['Stability_protocol'].str.contains('D'))& (~Al2O3['Stability_protocol'].str.contains('V'))&(~Al2O3['Stability_protocol'].str.contains('T'))]
     Al2O3_MPPT = Al2O3[(Al2O3['Stability_potential_bias_load_condition'] == 'MPPT') |
                                        (Al2O3['Stability_potential_bias_load_condition'] == 'Passive resistance')]
     Al2O3_T80 = [Al2O3['Calculated_T80'].reset_index(drop=True),Al2O3_ambient['Calculated_T80'].reset_index(drop=True),
@@ -172,9 +171,9 @@ if __name__ == '__main__':
     Foils_ambient = Foils[~Foils['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Foils_65_deg = Foils[(Foils['Stability_protocol'].str.contains('L|D|V|LC')) & (Foils['Stability_protocol'].str.contains('2|3'))]
     Foils_dark = Foils[(Foils['Stability_light_source_type'] == 'Dark') |
-                       (Foils['Stability_protocol'].str.contains('D')) | (Foils['Stability_protocol'].str.contains('V'))]
+                                                         (Foils['Stability_protocol'].str.contains('D|V|T'))]
     Foils_light = Foils[(Foils['Stability_light_source_type'] != 'Dark') & (
-        ~Foils['Stability_protocol'].str.contains('D')) & (~Foils['Stability_protocol'].str.contains('V'))]
+                                              ~Foils['Stability_protocol'].str.contains('D'))& (~Foils['Stability_protocol'].str.contains('V'))&(~Foils['Stability_protocol'].str.contains('T'))]
     Foils_MPPT = Foils[(Foils['Stability_potential_bias_load_condition'] == 'MPPT') |
                        (Foils['Stability_potential_bias_load_condition'] == 'Passive resistance')]
     Foils_T80 = [Foils['Calculated_T80'].reset_index(drop=True),
@@ -187,9 +186,9 @@ if __name__ == '__main__':
     Polymer_ambient = Polymer[~Polymer['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Polymer_65_deg = Polymer[(Polymer['Stability_protocol'].str.contains('L|D|V|LC')) & (Polymer['Stability_protocol'].str.contains('2|3'))]
     Polymer_dark = Polymer[(Polymer['Stability_light_source_type'] == 'Dark') |
-                       (Polymer['Stability_protocol'].str.contains('D')) | (Polymer['Stability_protocol'].str.contains('V'))]
-    Polymer_light = Polymer[(Polymer['Stability_light_source_type'] != 'Dark') & (~Polymer['Stability_protocol'].str.contains('D')) & (
-                            ~Polymer['Stability_protocol'].str.contains('V'))]
+                                                         (Polymer['Stability_protocol'].str.contains('D|V|T'))]
+    Polymer_light = Polymer[(Polymer['Stability_light_source_type'] != 'Dark') & (
+                                              ~Polymer['Stability_protocol'].str.contains('D'))& (~Polymer['Stability_protocol'].str.contains('V'))&(~Polymer['Stability_protocol'].str.contains('T'))]
     Polymer_MPPT = Polymer[(Polymer['Stability_potential_bias_load_condition'] == 'MPPT') |
                        (Polymer['Stability_potential_bias_load_condition'] == 'Passive resistance')]
     Polymer_T80 = [Polymer['Calculated_T80'].reset_index(drop=True),Polymer_ambient['Calculated_T80'].reset_index(drop=True),
@@ -202,10 +201,9 @@ if __name__ == '__main__':
     Glass_UV_glue_65_deg = Glass_UV_glue[(Glass_UV_glue['Stability_protocol'].str.contains('L|D|V|LC')) & (
         Glass_UV_glue['Stability_protocol'].str.contains('2|3'))]
     Glass_UV_glue_dark = Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] == 'Dark') |
-                       (Glass_UV_glue['Stability_protocol'].str.contains('D')) | (
-                           Glass_UV_glue['Stability_protocol'].str.contains('V'))]
+                                                         (Glass_UV_glue['Stability_protocol'].str.contains('D|V|T'))]
     Glass_UV_glue_light = Glass_UV_glue[(Glass_UV_glue['Stability_light_source_type'] != 'Dark') & (
-        ~Glass_UV_glue['Stability_protocol'].str.contains('D')) & (~Glass_UV_glue['Stability_protocol'].str.contains('V'))]
+                                              ~Glass_UV_glue['Stability_protocol'].str.contains('D'))& (~Glass_UV_glue['Stability_protocol'].str.contains('V'))&(~Glass_UV_glue['Stability_protocol'].str.contains('T'))]
     Glass_UV_glue_MPPT = Glass_UV_glue[(Glass_UV_glue['Stability_potential_bias_load_condition'] == 'MPPT') |
                        (Glass_UV_glue['Stability_potential_bias_load_condition'] == 'Passive resistance')]
     Glass_UV_glue_T80 = [Glass_UV_glue['Calculated_T80'].reset_index(drop=True),Glass_UV_glue_ambient['Calculated_T80'].reset_index(drop=True),
@@ -218,10 +216,9 @@ if __name__ == '__main__':
     Glass_epoxy_ambient = Glass_epoxy[~Glass_epoxy['Stability_protocol'].str.contains('L-2|L-3|D-2|D-3|V-2|V-3|LC-2|LC-3|IEC|LT|T1|T2|T3')]
     Glass_epoxy_65_deg = Glass_epoxy[(Glass_epoxy['Stability_protocol'].str.contains('L|D|V|LC')) & (Glass_epoxy['Stability_protocol'].str.contains('2|3'))]
     Glass_epoxy_dark = Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] == 'Dark') |
-                                       (Glass_epoxy['Stability_protocol'].str.contains('D')) | (
-                                           Glass_epoxy['Stability_protocol'].str.contains('V'))]
+                                                         (Glass_epoxy['Stability_protocol'].str.contains('D|V|T'))]
     Glass_epoxy_light = Glass_epoxy[(Glass_epoxy['Stability_light_source_type'] != 'Dark') & (
-        ~Glass_epoxy['Stability_protocol'].str.contains('D')) & (~Glass_epoxy['Stability_protocol'].str.contains('V'))]
+                                              ~Glass_epoxy['Stability_protocol'].str.contains('D'))& (~Glass_epoxy['Stability_protocol'].str.contains('V'))&(~Glass_epoxy['Stability_protocol'].str.contains('T'))]
     Glass_epoxy_MPPT = Glass_epoxy[(Glass_epoxy['Stability_potential_bias_load_condition'] == 'MPPT') |
                                       (Glass_epoxy['Stability_potential_bias_load_condition'] == 'Passive resistance')]
     Glass_epoxy_T80 = [Glass_epoxy['Calculated_T80'].reset_index(drop=True),Glass_epoxy_ambient['Calculated_T80'].reset_index(drop=True),
