@@ -234,7 +234,7 @@ if __name__ == '__main__':
     for i in range(6): # runs on all the sub-divisions
         data_for_box_plot = pd.concat([Foils_T80[i],Polymer_T80[i], Glass_UV_glue_T80[i], Glass_epoxy_T80[i],Glass_butyl_rubber_T80[i],Glass_polymer_T80[i],Al2O3_T80[i]], axis =1)  # horizontal_concat
         data_for_box_plot=data_for_box_plot.set_axis(["Foil","Polymer","SLG+UV glue","SLG+epoxy","SLG+but_rub", "SLG+polym", "Al2O3"], axis="columns")
-        plt.rcParams.update({'font.size': 24})
+        plt.rcParams.update({'font.size': 12})
         seaborn.catplot(x="variable", y="value", data=pd.melt(data_for_box_plot.dropna(how= "all", axis=1)), kind="box",palette=my_colors)
         seaborn.swarmplot(x='variable', y='value', data=pd.melt(data_for_box_plot.dropna(how= "all", axis=1)), color="gray")
         seaborn.pointplot(data=pd.melt(data_for_box_plot.dropna(how= "all", axis=1)), x="variable", y="value", estimator=np.mean,
@@ -242,7 +242,7 @@ if __name__ == '__main__':
         plt.ylabel("T80")
         plt.yscale('log')
         plt.minorticks_on()
-        plt.xticks(rotation=75)
+        plt.xticks(rotation=20)
         plt.xlabel("")
         plt.title(Graph_titles[i])
         frequency_table.append(['num of experiments'+Graph_titles[i],len(Foils_logT80[i]), len(Polymer_logT80[i]), len(Glass_UV_glue_logT80[i]), len(Glass_epoxy_logT80[i]),len(Glass_butyl_rubber_logT80[i]), len(Glass_polymer_logT80[i]),
