@@ -16,7 +16,8 @@ Download the newest data from the Peroskite Project, the file should contain onl
 (which is the default name of the downloaded data)
 
 What the code does:
-1) Estimates the T80 if it is not in the downloaded file (the value in column 'calculated T80' contains the T80 from the database and if it was not in the database than incontains the estimated T80).
-2) Classifies each experiments into 8 encapsulation groups: Other, Glass + epoxy, Glass + UV glue, Glass + polymer, Glass + butyl rubber, Foils and Polymers.
-3) Compares the T80 of 7 groups (Glass + epoxy, Glass + UV glue, Glass + polymer, Glass + butyl rubber, Foils and Polymers) by plotting the groups T80 and box plots and preforming a t-test for every combination of 2 groups.
+1) Fixes encapsulation and PCE data in the database according to the 'Manual additions' file. Cleans out all experiments that were not preformd in the Air.
+2) Estimates the T80 of the remaining experiments if the T80 was not in the downloaded file (the value in column 'calculated T80' contains the T80 from the database and if it was not in the database than incontains the estimated T80).
+3) Classifies each experiments into one of the following 8 encapsulation groups: Other, Glass + epoxy, Glass + UV glue, Glass + polymer, Glass + butyl rubber, Foils and Polymers.
+4) Compares the T80 of 7 groups (Glass + epoxy, Glass + UV glue, Glass + polymer, Glass + butyl rubber, Foils and Polymers) by plotting the groups T80 and box plots and preforming a t-test for every possible combination of 2 groups.
 
