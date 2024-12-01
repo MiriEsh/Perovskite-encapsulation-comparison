@@ -60,7 +60,7 @@ if __name__ == '__main__':
     #BURN IN FALSE (T80 is the defult):
     # T80 doesn't exist take Ts80
     # T80, Ts80 don't exist use T95 via: ln(0.8) * T95/ ln(0.95)
-    # T80, Ts80, T95 don't exist ->CALC VIA EXP
+    # T80, Ts80, T95 don't exist ->calc via exp.
     Perovskites.loc[Perovskites['Stability_PCE_burn_in_observed'] == False, 'Calculated_T80'] = np.log(0.8) * Perovskites['Stability_time_total_exposure']/np.log(Perovskites['Stability_PCE_end_of_experiment']/100.0)
     Perovskites.loc[((Perovskites['Stability_PCE_burn_in_observed'] == False) & (Perovskites['Stability_PCE_T95'].isna()==False)), 'Calculated_T80'] = np.log(0.8) * Perovskites['Stability_PCE_T95'] / np.log(0.95)
     Perovskites.loc[((Perovskites['Stability_PCE_burn_in_observed'] == False) & (Perovskites['Stability_PCE_Ts80'].isna()==False)), 'Calculated_T80'] = Perovskites['Stability_PCE_Ts80']
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     #BURN IN TRUE (TS80 is the defult):
     #TS80 doesn't exist - use T80
     #T80 doesn't exist- use Te80
-    #TS80/Te80 don't exist CALC VIA EXP using PCE(1000H) and PCE(END)
+    #TS80/Te80 don't exist calc. via exp. using PCE(1000H) and PCE(END)
     Perovskites.loc[((Perovskites['Stability_PCE_burn_in_observed'] == True) & (Perovskites['Stability_PCE_after_1000_h'].isna()==False) &
     (Perovskites['Stability_PCE_after_1000_h'] != Perovskites['Stability_PCE_end_of_experiment'])), 'Calculated_T80'] = \
     -np.log(0.8)*(Perovskites['Stability_time_total_exposure']-1000.0)/np.log(Perovskites['Stability_PCE_after_1000_h']/Perovskites['Stability_PCE_end_of_experiment'])
@@ -226,7 +226,7 @@ if __name__ == '__main__':
     Glass_epoxy_logT80 = [Glass_epoxy['logT80'].reset_index(drop=True),Glass_epoxy_ambient['logT80'].reset_index(drop=True),
                             Glass_epoxy_65_deg['logT80'].reset_index(drop=True),Glass_epoxy_dark['logT80'].reset_index(drop=True),
                             Glass_epoxy_light['logT80'].reset_index(drop=True),Glass_epoxy_MPPT['logT80'].reset_index(drop=True)]  # contains the logT80 of all the subdivisions
-    # finished preparing data for all the graphs
+    # finished preparing data for all the and t-tests
     frequency_table = []
     frequency_table.append(['', 'Foil','Polymer','Glass+UV_glue','Glass+epoxy','Glass+but_rubber','Glass+polymer','Al2O3'])
     my_colors = {'Foil': 'teal', 'Polymer': 'steelblue', 'Glass+UV_glue': 'slateblue', 'Glass+epoxy': 'darkorchid',
@@ -246,6 +246,7 @@ if __name__ == '__main__':
         plt.xticks(rotation=10)
         plt.xlabel("")
         plt.title(Graph_titles[i])
+        plt.gcf().set_size_inches(20, 10)
         frequency_table.append(['num of experiments'+Graph_titles[i],len(Foils_logT80[i]), len(Polymer_logT80[i]), len(Glass_UV_glue_logT80[i]), len(Glass_epoxy_logT80[i]),len(Glass_butyl_rubber_logT80[i]), len(Glass_polymer_logT80[i]),len(Al2O3_logT80[i])])
         frequency_table.append(['average'+Graph_titles[i], np.average(Foils_logT80[i]), np.average(Polymer_logT80[i]),np.average(Glass_UV_glue_logT80[i]),
                       np.average(Glass_epoxy_logT80[i]),np.average(Glass_butyl_rubber_logT80[i]), np.average(Glass_polymer_logT80[i]), np.average(Al2O3_logT80[i])])
@@ -272,7 +273,7 @@ if __name__ == '__main__':
                                      scipy.stats.ttest_ind(Glass_polymer_logT80[i], Al2O3_logT80[i], axis=0,equal_var=False).pvalue])
         t_test = pd.DataFrame(t_test)
         t_test.to_csv(output_path +"\\t_test_"+Graph_titles[i] +"_logT80.csv", index = False,header=False)
-        plt.savefig(output_path + "\\box_plot_" + Graph_titles[i] + ".png")
+        plt.savefig(output_path + "\\box_plot_" + Graph_titles[i] + ".png", dpi=100, bbox_inches="tight")
     plt.show()
     frequency_table= pd.DataFrame(frequency_table)
     frequency_table.to_csv(output_path +"\\frequency table logT80.csv", index = False, header=False)
