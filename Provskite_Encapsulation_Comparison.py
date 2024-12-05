@@ -6,7 +6,6 @@ import seaborn
 import scipy
 import os
 
-
 if __name__ == '__main__':
     dir_path = os.path.dirname(os.path.realpath(__file__))
     output_path = dir_path + "\\outputs"
@@ -238,20 +237,20 @@ if __name__ == '__main__':
         plt.rcParams.update({'font.size': 14})
         seaborn.catplot(x="variable", y="value", data=pd.melt(data_for_box_plot.dropna(how= "all", axis=1)), kind="box",palette=my_colors)
         seaborn.swarmplot(x='variable', y='value', data=pd.melt(data_for_box_plot.dropna(how= "all", axis=1)), color="gray")
-        seaborn.pointplot(data=pd.melt(data_for_box_plot.dropna(how= "all", axis=1)), x="variable", y="value", estimator=np.mean,
-                          join=False, ci=None, markers='+', color='black', zorder=3)
-        plt.ylabel("T80")
+        pow_10_averagelogT80 = {"Foil":pow(10,np.average(Foils_logT80[i])),"Polymer":pow(10,np.average(Polymer_logT80[i])),"Glass+UV_glue":pow(10,np.average(Glass_UV_glue_logT80[i])), "Glass+epoxy":pow(10,np.average(Glass_epoxy_logT80[i])),"Glass+but_rubber":pow(10,np.average(Glass_butyl_rubber_logT80[i])), "Glass+polymer":pow(10,np.average(Glass_polymer_logT80[i])), "Al2O3":pow(10,np.average(Al2O3_logT80[i]))}
+        average_data =pd.DataFrame(pow_10_averagelogT80, index=[0])
+        seaborn.pointplot(data=average_data,join=False, ci=None, markers='+', color='black', zorder=3)
+        plt.ylabel("T80 [h]")
         plt.yscale('log')
         plt.minorticks_on()
         plt.xticks(rotation=10)
         plt.xlabel("")
         plt.title(Graph_titles[i])
-        frequency_table.append(['num of experiments'+Graph_titles[i],len(Foils_logT80[i]), len(Polymer_logT80[i]), len(Glass_UV_glue_logT80[i]), len(Glass_epoxy_logT80[i]),len(Glass_butyl_rubber_logT80[i]), len(Glass_polymer_logT80[i]),
-                      len(Al2O3_logT80[i])])
+        frequency_table.append(['num of experiments'+Graph_titles[i],len(Foils_logT80[i]), len(Polymer_logT80[i]), len(Glass_UV_glue_logT80[i]), len(Glass_epoxy_logT80[i]),len(Glass_butyl_rubber_logT80[i]), len(Glass_polymer_logT80[i]),len(Al2O3_logT80[i])])
         frequency_table.append(['average'+Graph_titles[i], np.average(Foils_logT80[i]), np.average(Polymer_logT80[i]),np.average(Glass_UV_glue_logT80[i]),
                       np.average(Glass_epoxy_logT80[i]),np.average(Glass_butyl_rubber_logT80[i]), np.average(Glass_polymer_logT80[i]), np.average(Al2O3_logT80[i])])
         frequency_table.append(['stdev'+Graph_titles[i], np.std(Foils_logT80[i]),np.std(Polymer_logT80[i]), np.std(Glass_UV_glue_logT80[i]), np.std(Glass_epoxy_logT80[i]),np.std(Glass_butyl_rubber_logT80[i]), np.std(Glass_polymer_logT80[i]), np.std(Al2O3_logT80[i])])
-
+        #preparing t-test analysis
         t_test = []  # currently only printing t-test combinations of groups with more than 5 experiments - if more experiments are added after Sep. 3rd 2024 change this and add all combinations
         t_test.append([None,'Polymer','Glass+UV glue','Glass+epoxy','Glass +butyl rubber','Glass +polymer','Al2O3'])
         t_test.append(['Foil', scipy.stats.ttest_ind(Foils_logT80[i], Polymer_logT80[i], axis=0, equal_var=False).pvalue, scipy.stats.ttest_ind(Foils_logT80[i], Glass_UV_glue_logT80[i], axis=0, equal_var=False).pvalue, scipy.stats.ttest_ind(Foils_logT80[i], Glass_epoxy_logT80[i], axis=0, equal_var=False).pvalue, scipy.stats.ttest_ind(Foils_logT80[i], Glass_butyl_rubber_logT80[i], axis=0, equal_var=False).pvalue,
