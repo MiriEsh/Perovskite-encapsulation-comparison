@@ -5,7 +5,7 @@ No pip install is needed - in order to get the output analysis files: download t
 and run the code. There are 2 required input files: "Perovsite database query.csv" 
 (contains the data as downloaded from the Perovskite Database Material Zone project) and
 "Manual additions.csv" (contains corrections\additions to some of the rows in the MaterialZone
-project, this file is required but all rowsafter the column names can be empty).
+project, this file is required but all rows after the column names can be empty).
 The output files are: "Experiments_with_T80_greater_than_100.csv",
 "Experiments_with_T80_for_supp.csv", "Experiments_with_Encap_and_stability.csv",
 "frequency table logT80.csv", 6 csv t-test info files (1 file for all experiments and a seperate
