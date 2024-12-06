@@ -2,10 +2,13 @@ The Perovskite encapsulation comparison Python code takes the data downloaded
 from the Material Zone Perovskite Database Project and compares the stability of different
 encapsulations. 
 No pip install is needed - in order to get the output analysis files: download the newest data from the Peroskite Project (the file should contain only encapsulated experiments and it's name should be 'Perovsite database query.csv') 
-and run the code. There are 2 required input files: "Perovsite database query.csv" 
+and run the code. 
+
+There are 2 required input files: "Perovsite database query.csv" 
 (contains the data as downloaded from the Perovskite Database Material Zone project) and
 "Manual additions.csv" (contains corrections\additions to some of the rows in the MaterialZone
 project, this file is required but all rows after the column names can be empty).
+
 The output files are: "Experiments_with_T80_greater_than_100.csv",
 "Experiments_with_T80_for_supp.csv", "Experiments_with_Encap_and_stability.csv",
 "frequency table logT80.csv", 6 csv t-test info files (1 file for all experiments and a seperate
